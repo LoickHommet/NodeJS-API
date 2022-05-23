@@ -20,10 +20,10 @@ const mapToObj = (m) => {
     res.json(mapToObj(db.memoryDb));
 })
 
-app.get('/api/tache:id', (req, res) => {
+app.get('/api/tache/:id', (req, res) => {
     let id = parseInt(req.params.id)
-    res.json(db.memoryDb.get(id))
-})
+    res.json(db.memoryDb.get(id));
+  })
 
 
 
