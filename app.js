@@ -45,6 +45,10 @@ app.get('/api/tache/:id', (req, res) => {
   })
 
   app.post('/api/taches', (req, res) => {
+    const whoami = Accounts.getOne(req.user.id)
+    if (!whoami.isAdmin) return res.status(403).json({erreur: "Vous n'avez pas le droit d'accéder à ça"})
+      
+    delete user.password; // on ne veut pas transmettre le Hash.
     const payload = req.body
     const schema = Joi.object({
         description: Joi.string().min(2).max(50).required(),
@@ -60,7 +64,7 @@ app.get('/api/tache/:id', (req, res) => {
             faite: value.faite
         })
     }
-
+    const user = Accounts.getOne(parseInt(req.params.id))
   })
 
   app.put('/api/tache/:id', (req, res) => {
