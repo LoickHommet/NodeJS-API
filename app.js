@@ -7,6 +7,11 @@ const Joi = require("joi");
 // const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const Accounts = new Collection('Accounts');
+require('dotenv').config();
+if (!process.env.SECRET_KEY) {
+    console.log("ERREUR: vous devez créer une variable d'env JWT_SECRET_KEY");
+    process.exit(1);
+  }
 
 const app = express();
 
@@ -82,6 +87,22 @@ app.get('/api/tache/:id', (req, res) => {
   })
 
   // USER
+
+
+  function authToken(req, res, next){
+    const token = req.header('x-auth-token');
+    if (!token) {
+        throw new Error('Vous devez vous connecté');
+    }
+    try {
+        const decoded = jwt.verify(token, process.env.SECRET_KEY);
+        console.log(decoded)
+        req.user = decoded;
+        next();
+    } catch (error) {
+        throw new Error('Token invalide');
+    }
+}
 
   app.post('/register', async (req, res) => {
     const payload = req.body;
