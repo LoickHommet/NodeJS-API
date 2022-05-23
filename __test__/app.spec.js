@@ -61,13 +61,26 @@ describe('API Taches', ()=> {
     //     }
     //    );
 
-       it("PUT /api/tache/:id ", async () => {
+       it.skip("PUT /api/tache/:id ", async () => {
         let modification = { description: "Tache Modififier",  faite: true };
         const res = await request(app)
           .put("/api/tache/1")
           .send(modification)
           .expect(204);
         expect(modification).toMatchObject(db.memoryDb.get(1));
+      });
+
+       it.each([{description:"T"},{faite: false} , {description:''}, {faite:""}, {description: "tache 7"}, {faite: "pas bon"}])
+       ("PUT /api/tache/:id ", async () => {
+        async(invalidObjet)=> {
+                    let idDebut = db.id;
+                    const result = await request(app)
+                        .put("/api/taches/1")
+                        .send(invalidObjet)
+                        .expect(400)
+                    let idFin = db.id;
+                        expect(idFin).toBe(idDebut);
+                }
       });
     
 
