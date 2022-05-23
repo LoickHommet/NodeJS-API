@@ -14,3 +14,9 @@ app.use(express.json());
 
 
 
+
+app.listen(3000, '127.0.0.1', () => {
+    console.log("Server ecoute")
+})
+
+module.exports = app;
