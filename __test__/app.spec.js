@@ -36,7 +36,7 @@ describe('API Taches', ()=> {
       });
 
 
-    it("POST /api/taches", async () => {
+    it.skip("POST /api/taches", async () => {
         let tache = { description: "Tache 4",  faite: false };
         let id = db.id;
         const res = await request(app)
@@ -48,19 +48,27 @@ describe('API Taches', ()=> {
         expect(db.memoryDb.get(id)).toMatchObject(tache);
     });
 
-    it.each([{description:"T"},{faite: false} , {description:''}, {faite:""}, {description: "tache 7"}, {faite: "pas bon"}])(
-        "GET /api/tache:id avec joi",
-        async(invalidObjet)=> {
-            let idDebut = db.id;
-            const result = await request(app)
-                .post("/api/taches")
-                .send(invalidObjet)
-                .expect(400)
-            let idFin = db.id;
-                expect(idFin).toBe(idDebut);
-        }
-       );
-    
+    // it.each([{description:"T"},{faite: false} , {description:''}, {faite:""}, {description: "tache 7"}, {faite: "pas bon"}])(
+    //     "GET /api/tache:id avec joi",
+    //     async(invalidObjet)=> {
+    //         let idDebut = db.id;
+    //         const result = await request(app)
+    //             .post("/api/taches")
+    //             .send(invalidObjet)
+    //             .expect(400)
+    //         let idFin = db.id;
+    //             expect(idFin).toBe(idDebut);
+    //     }
+    //    );
+
+       it("PUT /api/tache/:id ", async () => {
+        let modification = { description: "Tache Modififier",  faite: true };
+        const res = await request(app)
+          .put("/api/tache/1")
+          .send(modification)
+          .expect(204);
+        expect(modification).toMatchObject(db.memoryDb.get(1));
+      });
     
 
 
