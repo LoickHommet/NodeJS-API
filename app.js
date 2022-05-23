@@ -114,4 +114,34 @@ app.get('/api/tache/:id', (req, res) => {
 });
 
 
+app.post('/login', async (req, res) => {
+    const payload = req.body;
+    const scheme = Joi.object({
+        email: Joi.string().max(255).email().required(),
+        password: Joi.string().max(255).required(),
+        username: Joi.string().max(255).required()
+    });
+    const {value, error} = scheme.validate(payload);
+    if (error) {
+        throw new Error(error.details[0].message);
+    }
+    const {id, found: account} = Accounts.findByProperty('email', value.email);
+    if (!account) {
+        throw new Error("Ce compte n'existe pas");
+    }
+    // Comparaison des hash avec bryct
+    // const passwordValid = await bcrypt.compare(payload.password, account.password);
+    // if (!passwordValid) {
+    //     throw new Error('Mot de passe invalide');
+    // }
+    const salt = 1245;
+    const passwordValid  = payload.password == hash(account.password, salt)
+        if (!passwordValid) {
+            throw new Error('Mot de passe invalide');
+        }
+
+    const token = jwt.sign({id}, process.env.SECRET_KEY);
+    res.header('x-auth-token', token).status(200).send("Connexion réussie");
+});
+
 module.exports = app;
