@@ -44,6 +44,26 @@ app.get('/api/tache/:id', (req, res) => {
 
   })
 
+  app.put('/api/tache/:id', (req, res) => {
+    let id = parseInt(req.params.id)
+     const payload = req.body;
+    const schema = Joi.object({
+        description: Joi.string().min(2).max(50).required(),
+        faite : Joi.boolean
+    })
+
+    const { value, error} = schema.validate(payload)
+    if(error)res.status(400).send({erreur : error.details[0].message})
+    else{
+        db.memoryDb.set(id, payload);
+        res.status(204).json({
+            description: value.description,
+            faite: value.faite
+        })
+    }
+
+  })
+
 
 
 
