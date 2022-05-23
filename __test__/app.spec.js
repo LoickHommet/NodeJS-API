@@ -27,5 +27,13 @@ describe('API Taches', ()=> {
         expect(JSON.parse(res.text)).toMatchObject(mapToObj(db.memoryDb));
     })
 
+    it("GET /api/tache:id ", async () => {
+        const res = await request(app)
+          .get("/api/tache/1")
+          .expect(200)
+          .expect("content-type", /json/);
+        expect(JSON.parse(res.text)).toMatchObject(db.memoryDb.get(1));
+      });
+
 
 })
