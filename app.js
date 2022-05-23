@@ -32,7 +32,10 @@ const mapToObj = (m) => {
     }, {});
   };
 
-  app.get('/api/tache', (req, res) => {
+  app.get('/api/tache', [authToken], (req, res) => {
+    const user = Accounts.getOne(req.user.id);
+
+    delete user.password;
     res.json(mapToObj(db.memoryDb));
 })
 
