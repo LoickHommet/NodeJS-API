@@ -1,9 +1,8 @@
-const express = require('express');
-require('express-async-errors');
-const Joi = require('joi');
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
-require('dotenv').config();
+const express = require('express')
+const fs = require('fs')
+const path = require('path')
+const db = require('./db');
+
 
 
 const app = express();
@@ -12,11 +11,5 @@ app.use(express.json());
 
 
 
-
-
-
-app.listen(3000, '127.0.0.1', () => {
-    console.log("Server ecoute")
-})
 
 module.exports = app;
