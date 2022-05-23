@@ -101,7 +101,7 @@ describe('POST /register', () => {
         {email: "helloWorld", password: "1234", username: "loolo"},
         {email: "AQS", password: "", username: "loolo"},
         {email: "blopi@dz", username: "loolo"},
-        {email: "dzadzad", passworde: "456", username: "loick"},
+        {email: "dzadzad", passworde: "456", username: "loick"}
     ])("Should refuse without inserting it", async (objectTest) => {
         const idDebut = Accounts.id;
         const result = await request(app)
@@ -113,3 +113,17 @@ describe('POST /register', () => {
     });
 });
 
+describe('POST /login', () => {
+    it.each([
+        {email: "example@example.com", password: "1234", username: "loick"},
+        {email: "example1@example.com", password: "1234", username: "loick"},
+        {email: "example2@example.com", password: "1234", username: "loick"}
+    ])('Should Cannot connect', async (objectTest) => {
+        const register = await request(app)
+            .post("/register")
+            .send(objectTest)
+            .expect(201);
+        objectTest.password = "";
+        const login = await request(app).post("/login").send(objectTest).expect(400);
+    });
+});
