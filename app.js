@@ -2,7 +2,7 @@ const express = require('express')
 const fs = require('fs')
 const path = require('path')
 const db = require('./db');
-
+const Joi = require("joi");
 
 
 const app = express();
@@ -26,9 +26,22 @@ app.get('/api/tache/:id', (req, res) => {
   })
 
   app.post('/api/taches', (req, res) => {
-    const payload = req.body;
-    db.memoryDb.set(db['id']++, payload);
-    res.status(201).json(payload);
+    const payload = req.body
+    const schema = Joi.object({
+        description: Joi.string().min(2).max(50).required(),
+        faite : Joi.boolean
+    })
+
+    const { value, error} = schema.validate(payload)
+    if(error)res.status(400).send({erreur : error.details[0].message})
+    else{
+        db.memoryDb.set(db['id']++, payload);
+        res.status(201).json({
+            description: value.description,
+            faite: value.faite
+        })
+    }
+
   })
 
 
