@@ -68,6 +68,8 @@ app.get('/api/tache/:id', (req, res) => {
   })
 
   app.put('/api/tache/:id', (req, res) => {
+    const whoami = Accounts.getOne(req.user.id)
+    if (!whoami.isAdmin) return res.status(403).json({erreur: "Vous n'avez pas le droit d'accéder à ça"})
     let id = parseInt(req.params.id)
      const payload = req.body;
     const schema = Joi.object({
@@ -84,6 +86,7 @@ app.get('/api/tache/:id', (req, res) => {
             faite: value.faite
         })
     }
+    const user = Accounts.getOne(parseInt(req.params.id))
 
   })
 
