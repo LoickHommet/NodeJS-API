@@ -68,10 +68,9 @@ app.get('/api/tache/:id', (req, res) => {
     let id = req.params.id;
     db.memoryDb.delete(id);
   return res.status({ message: 'Deleted' }).end();
-  
   })
 
 
 
-  
+
 module.exports = app;
