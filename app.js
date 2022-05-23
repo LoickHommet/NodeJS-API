@@ -25,6 +25,11 @@ app.get('/api/tache/:id', (req, res) => {
     res.json(db.memoryDb.get(id));
   })
 
+  app.post('/api/taches', (req, res) => {
+    const payload = req.body;
+    db.memoryDb.set(db['id']++, payload);
+    res.status(201).json(payload);
+  })
 
 
 
