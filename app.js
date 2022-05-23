@@ -3,9 +3,17 @@ const fs = require('fs')
 const path = require('path')
 const db = require('./db');
 const Joi = require("joi");
+// const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
 
 const app = express();
+
+const hash = (mdp, salt) =>{
+  
+    return  mdp = mdp + salt
+}
+//console.log(hash("test", 123))  
 
 app.use(express.json());
 
