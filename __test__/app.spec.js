@@ -82,7 +82,14 @@ describe('API Taches', ()=> {
                         expect(idFin).toBe(idDebut);
                 }
       });
-    
+      
+      it.skip("DELETE /api/tache/:id ", async () => {
+        const res = await request(app)
+        delete('api/tache/2')
+        .expect(401)
+        .expect("content-type", /json/);
+      
+      });
 
 
 })
