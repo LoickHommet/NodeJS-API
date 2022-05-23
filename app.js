@@ -13,7 +13,47 @@ if (!process.env.SECRET_KEY) {
     process.exit(1);
   }
 
+  const mongoose = require('mongoose');
+  mongoose.connect('mongodb://localhost:27017/NodeJS-Api')
+    .then(() => console.log('Connected to mongo'))
+    .catch((err) => console.error('Pas pu se connecter,', err))
+  
 const app = express();
+
+const schemaJoi = Joi.object({
+    _id: Joi.required(),
+    name: Joi.string().min(2).max(50).required(),
+    username: Joi.string().min(2).max(50).required(),
+    email: Joi.string().max(255).email().required()
+});
+
+const userSchema = new mongoose.Schema({
+    name: String,
+    username: String,
+    username: email
+});
+
+const User = mongoose.model('User', userSchema);
+
+async function createUser(obj){
+    const user = new User(obj);
+    const {value, error} = schemaJoi.validate(user._doc);
+    console.log(value);
+    if (error) {
+        console.log(error.details[0].message);
+    }
+    return await user.save();
+}
+
+
+app.post('/registerMango', (res, req) => {
+    createUser({
+        name: "Lisa",
+        username: "Kos",
+        isAdmin: true,
+        age: 24
+    })
+})
 
 const hash = (mdp, salt) =>{
   
