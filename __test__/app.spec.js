@@ -36,4 +36,17 @@ describe('API Taches', ()=> {
       });
 
 
+    it("GET /api/tache:id", async () => {
+        let tache = { description: "Tache 4",  faite: false };
+        let id = db.id;
+        const res = await request(app)
+            .post("/api/taches")
+            .send(tache)
+            .expect(201)
+            .expect("content-type", /json/);
+
+        expect(db.memoryDb.get(id)).toMatchObject(tache);
+    });
+
+
 })
