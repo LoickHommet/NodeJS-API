@@ -9,7 +9,7 @@ const jwt = require('jsonwebtoken');
 const Accounts = new Collection('Accounts');
 require('dotenv').config();
 if (!process.env.SECRET_KEY) {
-    console.log("ERREUR: vous devez créer une variable d'env JWT_SECRET_KEY");
+    console.log("ERREUR: vous devez créer une variable d'env SECRET_KEY");
     process.exit(1);
   }
 
